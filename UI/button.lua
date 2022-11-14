@@ -15,7 +15,13 @@ function TextButton:create(x, y, w, h, text, callback)
     return button
 end
 
-function TextButton:render()
+function TextButton:render(x, y)
+    local old = {}
+    if x and y then
+        old = {self.x, self.y}
+        self.x = self.x + x
+        self.y = self.y + y
+    end
     love.graphics.setColor(255, 255, 255)
     love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
     local center_text_x = self.w / 2
@@ -33,9 +39,20 @@ function TextButton:render()
     end
 
     love.graphics.setColor(255, 255, 255)
+
+    if x and y then
+        self.x = old[1]
+        self.y = old[2]
+    end
 end
 
-function TextButton:update(dt)
+function TextButton:update(dt, x, y)
+    old = {self.x, self.y}
+    if x and y then
+        self.x = self.x + x
+        self.y = self.y + y
+    end
+
     local mx, my = love.mouse.getPosition()
     if mx > self.x and mx < self.x + self.w and my > self.y and my < self.y + self.h then
         self.isHovered = true
@@ -48,6 +65,11 @@ function TextButton:update(dt)
     else
         self.isHovered = false
         self.isClicked = false
+    end
+
+    if x and y then
+        self.x = old[1]
+        self.y = old[2]
     end
 end
 
@@ -74,7 +96,14 @@ function BackgroudButton:create(x, y, normal_texture, clicked_texture, hover_tex
     return button
 end
 
-function BackgroudButton:render()
+function BackgroudButton:render(x, y)
+    local old = {}
+    if x and y then
+        old = {self.x, self.y}
+        self.x = self.x + x
+        self.y = self.y + y
+    end
+
     if self.isClicked then
         love.graphics.draw(self.clicked_texture, self.x, self.y)
     elseif self.isHovered then
@@ -82,9 +111,21 @@ function BackgroudButton:render()
     else
         love.graphics.draw(self.normal_texture, self.x, self.y)
     end
+
+    if x and y then
+        self.x = old[1]
+        self.y = old[2]
+    end
 end
 
-function BackgroudButton:update(dt)
+function BackgroudButton:update(dt, x, y)
+    old = {}
+    if x and y then
+        old = {self.x, self.y}
+        self.x = self.x + x
+        self.y = self.y + y
+    end
+
     local mx, my = love.mouse.getPosition()
     if mx > self.x and mx < self.x + self.normal_texture:getWidth() and my > self.y and my < self.y + self.normal_texture:getHeight() then
         self.isHovered = true
@@ -97,6 +138,11 @@ function BackgroudButton:update(dt)
     else
         self.isHovered = false
         self.isClicked = false
+    end
+
+    if x and y then
+        self.x = old[1]
+        self.y = old[2]
     end
 end
 
@@ -126,7 +172,14 @@ function BackgroudTextButton:create(x, y, width, height, normal_texture, hover_t
     return button
 end
 
-function BackgroudTextButton:render()
+function BackgroudTextButton:render(x, y)
+    local old = {}
+    if x and y then
+        old = {self.x, self.y}
+        self.x = self.x + x
+        self.y = self.y + y
+    end
+
     if self.isClicked then
         local scale_x = self.width / self.clicked_texture:getWidth()
         local scale_y = self.height / self.clicked_texture:getHeight()
@@ -144,9 +197,20 @@ function BackgroudTextButton:render()
     local center_text_x = self.width / 2
     local center_text_y = self.height / 2
     love.graphics.print(self.text, self.x + center_text_x - self.text:len() * 3.3, self.y + center_text_y - 8)
+
+    if x and y then
+        self.x = old[1]
+        self.y = old[2]
+    end
 end
 
-function BackgroudTextButton:update(dt)
+function BackgroudTextButton:update(dt, x, y)
+    old = {self.x, self.y}
+    if x and y then
+        self.x = self.x + x
+        self.y = self.y + y
+    end
+
     local mx, my = love.mouse.getPosition()
     if mx > self.x and mx < self.x + self.width and my > self.y and my < self.y + self.height then
         self.isHovered = true
@@ -159,6 +223,11 @@ function BackgroudTextButton:update(dt)
     else
         self.isHovered = false
         self.isClicked = false
+    end
+
+    if x and y then
+        self.x = old[1]
+        self.y = old[2]
     end
 end
 
@@ -188,8 +257,20 @@ function GroupButtons:render()
     end
 end
 
-function GroupButtons:update(dt)
+function GroupButtons:update(dt, x, y)
+    local old = {}
+    if x and y then
+        old = {self.x, self.y}
+        self.x = self.x + x
+        self.y = self.y + y
+    end
+
     for i, button in ipairs(self.buttons) do
         button:update(dt)
+    end
+
+    if x and y then
+        self.x = old[1]
+        self.y = old[2]
     end
 end
