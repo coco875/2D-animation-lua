@@ -10,6 +10,7 @@ function update_select(dt)
             item_select.y = item_select.y + (love.mouse.getY() - last_pos.y)
         else
             item_selected = false
+            item_select.isClicked = false
         end
     end
     last_pos = {x = love.mouse.getX(), y = love.mouse.getY()}

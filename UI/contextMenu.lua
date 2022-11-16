@@ -48,7 +48,7 @@ function ContextMenu:update(dt)
     for i, item in ipairs(self.items) do
         if mx > self.x and mx < self.x + self.width and my > self.y + 5 + (i - 1) * 20 and my < self.y + 5 + i * 20 then
             item.isHovered = true
-            if love.mouse.isDown(1) then
+            if mousepressed() then
                 item.isClicked = true
                 item["callback"]()
             else
@@ -59,7 +59,7 @@ function ContextMenu:update(dt)
             item.isClicked = false
         end
     end
-    if love.mouse.isDown(1) then
+    if mousepressed() then
         if mx < self.x or mx > self.x + self.width or my < self.y or my > self.y + self.height then
             self.isShown = false
         end

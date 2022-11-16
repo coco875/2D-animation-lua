@@ -15,14 +15,21 @@ local windows = Window:create(100, 100, 200, 200, "Test", {
 
 local menu_create_obj = {}
 
+local bone_windows = WindowObject:create(100, 100, 200, 200, "Bones", all_bones)
+local node_windows = WindowObject:create(100, 100, 200, 200, "Nodes", all_nodes)
+
 menu_create_obj = ContextMenu:create(love.mouse.getX(), love.mouse.getY(), 100, 100, {
     {text = "Create node", callback = function()
         Node:create(love.mouse.getX(), love.mouse.getY(), {1, 0, 0, 1})
         menu_create_obj.isShown = false
     end},
-    {text = "Create windows", callback = function()
+
+    {text = "Create bone", callback = function()
         print("Load")
+        Bone:create(love.mouse.getX(), love.mouse.getY(), {0, 1, 0, 1})
+        menu_create_obj.isShown = false
     end},
+
     {text = "Quit", callback = function()
         love.event.quit()
     end}
@@ -33,6 +40,8 @@ function love.draw()
     render_nodes()
     windows:render()
     menu_create_obj:render()
+    bone_windows:render()
+    node_windows:render()
 end
 
 function love.update(dt)
@@ -44,4 +53,8 @@ function love.update(dt)
         menu_create_obj.isShown = true
     end
     update_select(dt)
+    update_nodes(dt)
+    update_bones(dt)
+    bone_windows:update(dt)
+    node_windows:update(dt)
 end

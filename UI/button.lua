@@ -56,7 +56,7 @@ function TextButton:update(dt, x, y)
     local mx, my = love.mouse.getPosition()
     if mx > self.x and mx < self.x + self.w and my > self.y and my < self.y + self.h then
         self.isHovered = true
-        if love.mouse.isDown(1) then
+        if mousepressed() then
             self.isClicked = true
             self:mousepressed()
         else
@@ -129,7 +129,7 @@ function BackgroudButton:update(dt, x, y)
     local mx, my = love.mouse.getPosition()
     if mx > self.x and mx < self.x + self.normal_texture:getWidth() and my > self.y and my < self.y + self.normal_texture:getHeight() then
         self.isHovered = true
-        if love.mouse.isDown(1) then
+        if mousepressed() then
             self.isClicked = true
             self:mousepressed()
         else
@@ -214,7 +214,7 @@ function BackgroudTextButton:update(dt, x, y)
     local mx, my = love.mouse.getPosition()
     if mx > self.x and mx < self.x + self.width and my > self.y and my < self.y + self.height then
         self.isHovered = true
-        if love.mouse.isDown(1) then
+        if mousepressed() then
             self.isClicked = true
             self:mousepressed()
         else
@@ -273,4 +273,8 @@ function GroupButtons:update(dt, x, y)
         self.x = old[1]
         self.y = old[2]
     end
+end
+
+function mousepressed()
+    return love.mouse.isDown(1) and not love.mouse.isDown(2) and not love.mouse.isDown(3) and not item_selected
 end
