@@ -276,5 +276,5 @@ function GroupButtons:update(dt, x, y)
 end
 
 function mousepressed()
-    return love.mouse.isDown(1) and not love.mouse.isDown(2) and not love.mouse.isDown(3) and not item_selected
+    return love.mouse.isDown(1) and not item_selected
 end

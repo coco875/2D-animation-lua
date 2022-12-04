@@ -47,13 +47,13 @@ local mouse_menu = ContextMenu:create(love.mouse.getX(), love.mouse.getY(), 100,
     end}
 })
 
-function love.draw()
+function draw()
     menu_buttons:render()
     mouse_menu:render()
     sub_menu:render()
 end
 
-function love.update(dt)
+function update(dt)
     menu_buttons:update(dt)
     sub_menu:update(dt)
     if love.mouse.isDown(2) then

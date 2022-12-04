@@ -13,6 +13,10 @@ function Bone:create(x, y, color)
     bone.name = "Bone"..tostring(#all_bones)
     bone.node1 = Node:create(x+50, y, color)
     bone.node2 = Node:create(x-50, y, color)
+
+    bone.node1:addBone(bone)
+    bone.node2:addBone(bone)
+
     bone.color = color
     bone.isHovered = false
     bone.isClicked = false
@@ -35,8 +39,11 @@ function Bone:render()
 end
 
 function Bone:update(dt)
-    self.node1.isShown = self.isShown
-    self.node2.isShown = self.isShown
+    if not self.last_state == self.isShown then
+        self.node1.isShown = self.isShown
+        self.node2.isShown = self.isShown
+    end
+    self.isShown = (self.node1.isShown and self.node2.isShown)
 
     if self.x ~= self.old_x or self.y ~= self.old_y then
         self.node1.x = self.node1.x + (self.x - self.old_x)
@@ -46,23 +53,32 @@ function Bone:update(dt)
         self.old_x = self.x
         self.old_y = self.y
     end
+
     local mx, my = love.mouse.getPosition()
     local x1, y1, x2, y2 = self.node1.x, self.node1.y, self.node2.x, self.node2.y
     local d = math.abs((y2 - y1) * mx - (x2 - x1) * my + x2 * y1 - y2 * x1) / math.sqrt((y2 - y1) ^ 2 + (x2 - x1) ^ 2)
-    if d < 10 and mx > math.min(x1, x2)-10 and mx < math.max(x1, x2)+10 and my > math.min(y1, y2)-10 and my < math.max(y1, y2)+10 then
+
+    if d < 10 and mx > math.min(x1, x2)-10 and mx < math.max(x1, x2)+10 and my > math.min(y1, y2)-10 and my < math.max(y1, y2)+10 and self.isShown then
         self.isHovered = true
-        if mousepressed() then
-            print("clicked")
+        if love.mouse.isDown(1) and (love.keyboard.isDown("lshift") or love.keyboard.isDown("rshift")) and not has_comon_element({self.node1, self.node2}, multi_select) then
+            if not has_value(multi_select, self) then
+                table.insert(multi_select, self)
+            end
+            item_selected = true
+            multi_selected = true
+            self.isClicked = true
+
+        elseif mousepressed() then
             self.isClicked = true
             item_select = self
             item_selected = true
-        else
-            self.isClicked = false
+
         end
     else
         self.isHovered = false
         self.isClicked = false
     end
+    self.last_state = self.isShown
 end
 
 function render_bones()
@@ -101,27 +117,38 @@ function Node:render()
     if not self.isShown then
         return
     end
+
     love.graphics.setColor(self.color)
     love.graphics.circle("fill", self.x, self.y, 10)
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.circle("line", self.x, self.y, 10)
+    
     if self.isHovered then
         love.graphics.setColor(0.5, 0.5, 0.5, 0.4)
         love.graphics.circle("fill", self.x, self.y, 10)
     end
+    
     if self.isClicked then
         love.graphics.setColor(1, 1, 1, 0.4)
         love.graphics.circle("fill", self.x, self.y, 10)
     end
+    
     love.graphics.setColor(1, 1, 1, 1)
 end
 
 function Node:update(dt)
     local mx, my = love.mouse.getPosition()
-    if mx > self.x - 10 and mx < self.x + 10 and my > self.y - 10 and my < self.y + 10 then
+    if mx > self.x - 10 and mx < self.x + 10 and my > self.y - 10 and my < self.y + 10 and self.isShown then
         self.isHovered = true
-        if mousepressed() then
-            print("node clicked")
+        if love.mouse.isDown(1) and (love.keyboard.isDown("lshift") or love.keyboard.isDown("rshift")) and not has_comon_element(self.bones, multi_select) then
+            if not has_value(multi_select, self) then
+                table.insert(multi_select, self)
+            end
+            item_selected = true
+            multi_selected = true
+            self.isClicked = true
+
+        elseif mousepressed() then
             self.isClicked = true
             item_select = self
             item_selected = true

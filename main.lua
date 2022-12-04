@@ -38,14 +38,12 @@ menu_create_obj = ContextMenu:create(love.mouse.getX(), love.mouse.getY(), 100, 
 function love.draw()
     render_bones()
     render_nodes()
-    windows:render()
+    render_windows()
     menu_create_obj:render()
-    bone_windows:render()
-    node_windows:render()
 end
 
 function love.update(dt)
-    windows:update(dt)
+    update_windows(dt)
     menu_create_obj:update(dt)
     if love.mouse.isDown(2) then
         menu_create_obj.x = love.mouse.getX()
@@ -55,6 +53,4 @@ function love.update(dt)
     update_select(dt)
     update_nodes(dt)
     update_bones(dt)
-    bone_windows:update(dt)
-    node_windows:update(dt)
 end

@@ -1,6 +1,8 @@
 require("UI.button")
 require("UI.select")
 
+local all_windows = {}
+
 Window = {}
 Window.__index = Window
 
@@ -16,6 +18,7 @@ function Window:create(x, y, width, height, title, buttons)
     window.isShown = true
     window.canClose = true
     window.canMove = true
+    all_windows[#all_windows+1] = window
     return window
 end
 
@@ -49,9 +52,19 @@ function Window:update(dt)
             local mx, my = love.mouse.getPosition()
             if mx > self.x + self.width - 20 and mx < self.x + self.width and my > self.y and my < self.y + 20 and self.canClose then
                 self.isShown = false
+
             elseif mx > self.x and mx < self.x + self.width and my > self.y and my < self.y + 20 and self.canMove then
                 item_select = self
-                item_selected = true 
+                item_selected = true
+
+                local id = 0
+                for i, window in ipairs(all_windows) do
+                    if window == self then
+                        id = i
+                    end
+                end
+                table.remove(all_windows, id)
+                all_windows[#all_windows+1] = self
             end
         end
     end
@@ -73,6 +86,7 @@ function WindowObject:create(x, y, width, height, title, liste)
     window.canClose = true
     window.canMove = true
     window.couldown = 0
+    all_windows[#all_windows+1] = window
     return window
 end
 
@@ -117,6 +131,14 @@ function WindowObject:update(dt)
             elseif mx > self.x and mx < self.x + self.width and my > self.y and my < self.y + 20 and self.canMove then
                 item_select = self
                 item_selected = true 
+                local id = 0
+                for i, window in ipairs(all_windows) do
+                    if window == self then
+                        id = i
+                    end
+                end
+                table.remove(all_windows, id)
+                all_windows[#all_windows+1] = self
             end
 
             if mx > self.x + 5 and mx < self.x + self.width - 5 and my > self.y + 25 and my < self.y + self.height - 5 and self.couldown < 0 then
@@ -128,5 +150,17 @@ function WindowObject:update(dt)
                 end
             end
         end
+    end
+end
+
+function render_windows()
+    for i, window in ipairs(all_windows) do
+        window:render()
+    end
+end
+
+function update_windows(dt)
+    for i, window in ipairs(all_windows) do
+        all_windows[#all_windows-i+1]:update(dt)
     end
 end
