@@ -3,9 +3,10 @@ require("UI.contextMenu")
 require("UI.windows")
 require("UI.button")
 require("UI.select")
+require("UI.header")
 
 local windows = Window:create(100, 100, 200, 200, "Test", {
-    TextButton:create(10, 30, 180, 20, "Test", function() print("Test") end),
+    HeaderTextButton:create(10, 30, 180, 20, {"Test", "text"}, function(i) print(i) end),
     TextButton:create(10, 60, 180, 20, "Test2", function() print("Test2") end),
     TextButton:create(10, 90, 180, 20, "Test3", function() print("Test3") end),
     TextButton:create(10, 120, 180, 20, "Test4", function() print("Test4") end),
@@ -15,8 +16,8 @@ local windows = Window:create(100, 100, 200, 200, "Test", {
 
 local menu_create_obj = {}
 
-local bone_windows = WindowObject:create(100, 100, 200, 200, "Bones", all_bones)
-local node_windows = WindowObject:create(100, 100, 200, 200, "Nodes", all_nodes)
+local bone_windows = WindowObject:create(300, 100, 200, 200, "Bones", all_bones)
+local node_windows = WindowObject:create(100, 300, 200, 200, "Nodes", all_nodes)
 
 menu_create_obj = ContextMenu:create(love.mouse.getX(), love.mouse.getY(), 100, 100, {
     {text = "Create node", callback = function()

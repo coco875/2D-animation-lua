@@ -6,8 +6,8 @@ function TextButton:create(x, y, w, h, text, callback)
     setmetatable(button, TextButton)
     button.x = x
     button.y = y
-    button.w = w
-    button.h = h
+    button.width = w
+    button.height = h
     button.text = text
     button.callback = callback
     button.isHovered = false
@@ -23,19 +23,19 @@ function TextButton:render(x, y)
         self.y = self.y + y
     end
     love.graphics.setColor(255, 255, 255)
-    love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
-    local center_text_x = self.w / 2
-    local center_text_y = self.h / 2
+    love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
+    local center_text_x = self.width / 2
+    local center_text_y = self.height / 2
     love.graphics.print(self.text, self.x + center_text_x - self.text:len() * 3.3, self.y + center_text_y - 8)
 
     if self.isHovered then
         love.graphics.setColor(255, 255, 255, 100)
-        love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
+        love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
     end
 
     if self.isClicked then
         love.graphics.setColor(0, 255, 0, 100)
-        love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
+        love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
     end
 
     love.graphics.setColor(255, 255, 255)
@@ -54,7 +54,7 @@ function TextButton:update(dt, x, y)
     end
 
     local mx, my = love.mouse.getPosition()
-    if mx > self.x and mx < self.x + self.w and my > self.y and my < self.y + self.h then
+    if mx > self.x and mx < self.x + self.width and my > self.y and my < self.y + self.height then
         self.isHovered = true
         if mousepressed() then
             self.isClicked = true
@@ -251,9 +251,13 @@ function GroupButtons:append(button)
     table.insert(self.buttons, button)
 end
 
-function GroupButtons:render()
+function GroupButtons:render(x, y)
+    local x = x or 0
+    local y = y or 0
+    local last_width = 0
     for i, button in ipairs(self.buttons) do
-        button:render()
+        button:render(last_width+x, y)
+        last_width = last_width + button.width
     end
 end
 
@@ -266,7 +270,7 @@ function GroupButtons:update(dt, x, y)
     end
 
     for i, button in ipairs(self.buttons) do
-        button:update(dt)
+        button:update(dt, x, y)
     end
 
     if x and y then
