@@ -1,4 +1,4 @@
-require("UI.button")
+require("UI.buttons")
 require("UI.select")
 
 local all_windows = {}

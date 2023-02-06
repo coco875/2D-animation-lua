@@ -6,7 +6,10 @@ local last_pos = {x = love.mouse.getX(), y = love.mouse.getY()}
 multi_selected = false
 multi_select = {}
 
+last_click = love.mouse.isDown(1)
+
 function update_select(dt)
+    last_click = love.mouse.isDown(1)
     if item_selected then
         if multi_selected then
             if love.keyboard.isDown("lshift") or love.keyboard.isDown("rshift") then
@@ -32,4 +35,8 @@ function update_select(dt)
         end
     end
     last_pos = {x = love.mouse.getX(), y = love.mouse.getY()}
+end
+
+function mousepressed()
+    return love.mouse.isDown(1) and not item_selected and not last_click
 end

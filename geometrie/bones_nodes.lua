@@ -1,6 +1,6 @@
 require("utils.tableManip")
 require("UI.select")
-require("UI.button")
+require("UI.buttons")
 
 all_bones = {}
 

@@ -1,4 +1,4 @@
-require("UI.button")
+require("UI.buttons")
 
 Header = {}
 Header.__index = Header

@@ -1,4 +1,4 @@
-require("UI/button")
+require("UI.buttons")
 require("UI/contextMenu")
 
 local quit_image_n = love.graphics.newImage("assets/quit_n.bmp")

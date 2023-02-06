@@ -1,12 +1,14 @@
 require("geometrie.bones_nodes")
+require("UI.sliders")
 require("UI.contextMenu")
 require("UI.windows")
-require("UI.button")
+require("UI.buttons")
 require("UI.select")
 require("UI.header")
 
 local windows = Window:create(100, 100, 200, 200, "Test", {
     HeaderTextButton:create(10, 30, 180, 20, {"Test", "text"}, function(i) print(i) end),
+    Slider:create(10, 30, 180, 20, 20, "x"),
     TextButton:create(10, 60, 180, 20, "Test2", function() print("Test2") end),
     TextButton:create(10, 90, 180, 20, "Test3", function() print("Test3") end),
     TextButton:create(10, 120, 180, 20, "Test4", function() print("Test4") end),
