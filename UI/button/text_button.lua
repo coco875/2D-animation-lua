@@ -26,7 +26,7 @@ function TextButton:render(x, y)
     love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
     local center_text_x = self.width / 2
     local center_text_y = self.height / 2
-    love.graphics.print(self.text, self.x + center_text_x - self.text:len() * 3.3, self.y + center_text_y - 8)
+    love.graphics.print(self.text, self.x + center_text_x - self.text:len() * 3.3, self.y + center_text_y - 8, 0, 1, 1)
 
     if self.isHovered then
         love.graphics.setColor(255, 255, 255, 100)

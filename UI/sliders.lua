@@ -3,7 +3,7 @@ require("UI.select")
 Slider = {}
 Slider.__index = Slider
 
-function Slider:create(x, y, width, height, slider_lenght, orientation)
+function Slider:create(x, y, width, height, slider_lenght, orientation, transparent)
     local slider = {}
     setmetatable(slider, Slider)
     slider.x = x
@@ -19,12 +19,18 @@ function Slider:create(x, y, width, height, slider_lenght, orientation)
     if orientation == "x" or orientation == "horizontal" then
         slider.orientation = "x"
     end
+    slider.transparent = false
+    if transparent then
+        slider.transparent = true
+    end
     return slider
 end
 
 function Slider:render(x,y)
     love.graphics.setColor(0.8,0.8,0.8)
-    love.graphics.rectangle("fill", self.x + x, self.y + y, self.width, self.height)
+    if not self.transparent then
+        love.graphics.rectangle("fill", self.x + x, self.y + y, self.width, self.height)
+    end
 
     if self.orientation == "y" then
         love.graphics.setColor(0.3,0.3,0.3)
@@ -57,4 +63,6 @@ function Slider:update(dt, x, y)
             end
         end
     end
+
+    self.percent = math.max(0, math.min(1, self.percent))
 end

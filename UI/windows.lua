@@ -6,7 +6,7 @@ local all_windows = {}
 Window = {}
 Window.__index = Window
 
-function Window:create(x, y, width, height, title, buttons)
+function Window:create(x, y, width, height, title, items)
     local window = {}
     setmetatable(window, Window)
     window.x = x
@@ -14,7 +14,7 @@ function Window:create(x, y, width, height, title, buttons)
     window.width = width
     window.height = height
     window.title = title
-    window.buttons = buttons
+    window.items = items
     window.isShown = true
     window.canClose = true
     window.canMove = true
@@ -30,7 +30,7 @@ function Window:render()
         love.graphics.rectangle("fill", self.x, self.y, self.width, 20)
         love.graphics.setColor(0, 0, 0, 1)
         love.graphics.print(self.title, self.x + 5, self.y + 5)
-        for i, button in ipairs(self.buttons) do
+        for i, button in ipairs(self.items) do
             button:render(self.x, self.y)
         end
         -- close button
@@ -44,8 +44,8 @@ end
 
 function Window:update(dt)
     if self.isShown then
-        for i, button in ipairs(self.buttons) do
-            button:update(dt, self.x, self.y)
+        for i, item in ipairs(self.items) do
+            item:update(dt, self.x, self.y)
         end
 
         if mousepressed() then

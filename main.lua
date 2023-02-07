@@ -5,14 +5,16 @@ require("UI.windows")
 require("UI.buttons")
 require("UI.select")
 require("UI.header")
+require("UI.box")
+require("UI.image")
 
 local windows = Window:create(100, 100, 200, 200, "Test", {
     HeaderTextButton:create(10, 30, 180, 20, {"Test", "text"}, function(i) print(i) end),
     Slider:create(10, 30, 180, 20, 20, "x"),
-    TextButton:create(10, 60, 180, 20, "Test2", function() print("Test2") end),
-    TextButton:create(10, 90, 180, 20, "Test3", function() print("Test3") end),
-    TextButton:create(10, 120, 180, 20, "Test4", function() print("Test4") end),
-    TextButton:create(10, 150, 180, 20, "Test5", function() print("Test5") end),
+    Box:create(10, 60, 180, 100, {
+        TextButton:create(0, 0, 170, 70, "Test1", function() print("Test1") end),
+        Image:create(0, 0, "button_c.bmp"),
+    }),
     TextButton:create(10, 180, 180, 20, "Test6", function() print("Test6") end),
 })
 
