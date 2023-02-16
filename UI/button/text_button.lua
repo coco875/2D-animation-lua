@@ -1,3 +1,5 @@
+require("utils.hitbox")
+
 TextButton = {}
 TextButton.__index = TextButton
 
@@ -54,7 +56,7 @@ function TextButton:update(dt, x, y)
     end
 
     local mx, my = love.mouse.getPosition()
-    if mx > self.x and mx < self.x + self.width and my > self.y and my < self.y + self.height then
+    if inside_box(mx, my, {self.x, self.y, self.width, self.height}) then
         self.isHovered = true
         if mousepressed() then
             self.isClicked = true

@@ -1,4 +1,5 @@
 require("UI.select")
+require("utils.hitbox")
 
 Slider = {}
 Slider.__index = Slider
@@ -13,6 +14,7 @@ function Slider:create(x, y, width, height, slider_lenght, orientation, transpar
     slider.percent = 0
     slider.slider_lenght = slider_lenght
     slider.orientation = "y"
+    slider.isShown = true
     if orientation == "y" or orientation == "vertical" then
         slider.orientation = "y"
     end
@@ -27,6 +29,10 @@ function Slider:create(x, y, width, height, slider_lenght, orientation, transpar
 end
 
 function Slider:render(x,y)
+    if not self.isShown then
+        return
+    end
+
     love.graphics.setColor(0.8,0.8,0.8)
     if not self.transparent then
         love.graphics.rectangle("fill", self.x + x, self.y + y, self.width, self.height)
@@ -43,24 +49,29 @@ function Slider:render(x,y)
 end
 
 function Slider:update(dt, x, y)
+    if not self.isShown then
+        return
+    end
     if item_selected then
         return
     end
 
+    --print(self.x+x, self.y+y, self.width, self.height)
+
+    if not love.mouse.isDown(1) then
+        return
+    end
+
     if self.orientation == "y" then
-        if love.mouse.isDown(1) then
-            if love.mouse.getX() > self.x + x and love.mouse.getX() < self.x + x + self.width and love.mouse.getY() > self.y + y and love.mouse.getY() < self.y + y + self.height then
-                self.percent = (love.mouse.getY() - self.y - y - self.slider_lenght/2) /
-                    (self.height - self.slider_lenght)
-            end
+        if inside_box(love.mouse.getX(), love.mouse.getY(), {self.x + x, self.y + y, self.width, self.height}) then
+            self.percent = (love.mouse.getY() - self.y - y - self.slider_lenght/2) /
+                (self.height - self.slider_lenght)
         end
     end
     if self.orientation == "x" then
-        if love.mouse.isDown(1) then
-            if love.mouse.getX() > self.x + x and love.mouse.getX() < self.x + x + self.width and love.mouse.getY() > self.y + y and love.mouse.getY() < self.y + y + self.height then
-                self.percent = (love.mouse.getX() - self.x - x - self.slider_lenght/2) /
-                    (self.width - self.slider_lenght)
-            end
+        if inside_box(love.mouse.getX(), love.mouse.getY(), {self.x + x, self.y + y, self.width, self.height}) then
+            self.percent = (love.mouse.getX() - self.x - x - self.slider_lenght/2) /
+                (self.width - self.slider_lenght)
         end
     end
 
