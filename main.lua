@@ -1,18 +1,17 @@
-require("UI.box")
+require("UI.windows")
 require("UI.buttons")
 
-local items = Box:create(0, 0, 200, 200, {
-    TextButton:create(0, 0, 300, 300, "test", function() end),
+img = love.graphics.newImage("assets/button_c.bmp")
+
+local windows = Window:create(100, 100, 200, 200, "Test", {
+    TextButton:create(0, 0, 100, 20, "Test", function() print("Test") end),
 })
 
-function love.load()
-    love.window.setMode(800, 600)
+function love.draw()
+    render_windows()
 end
 
 function love.update(dt)
-    items:update(dt, 100, 100)
-end
-
-function love.draw()
-    items:render(100, 100)
+    update_windows(dt)
+    update_select(dt)
 end

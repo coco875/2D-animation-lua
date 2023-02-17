@@ -1,0 +1,1 @@
+copy /b love/love.exe+/ App.exe

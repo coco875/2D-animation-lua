@@ -11,12 +11,14 @@ function Box:create(x, y, width, height, items)
     box.y = y
     box.width = width
     box.height = height
-    box.slider_y = Slider:create(width-20, 0, 20, height-20, 20, "y")
-    box.slider_x = Slider:create(0, height-20, width-20, 20, 20, "x")
-    box.items = items
-    box.calc = {0, 0, width-20, height-20}
+
     box.max_x = 0
     box.max_y = 0
+    box.items = items
+
+    box.slider_y = Slider:create(width-20, 0, 20, height-20, 20, "y")
+    box.slider_x = Slider:create(0, height-20, width-20, 20, 20, "x")
+
     for i, item in ipairs(box.items) do
         if item.x + item.width > box.max_x then
             box.max_x = item.x + item.width
@@ -25,14 +27,25 @@ function Box:create(x, y, width, height, items)
             box.max_y = item.y + item.height
         end
     end
-    if box.max_x < box.calc[3] then
+    box.calc = {0, 0, width-20, height-20}
+    if box.max_x < width then
         box.max_x = box.width
         box.slider_x.isShown = false
+    elseif box.max_x < box.calc[3] then
+        box.max_x = box.calc[3]
+        box.slider_x.isShown = false
     end
-    if box.max_y < box.calc[4] then
+
+    if box.max_y < height then
         box.max_y = box.height
         box.slider_y.isShown = false
+    elseif box.max_y < box.calc[4] then
+        box.max_y = box.calc[4]
+        box.slider_y.isShown = false
     end
+
+    box.calc = {0, 0, box.max_x, box.max_y}
+    
     return box
 end
 
