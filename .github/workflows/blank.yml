@@ -38,3 +38,7 @@ jobs:
           source_dir: src
           # Directory in the GitHub workspace where the built distributables should be located
           result_dir: release
+      - uses: actions/upload-artifact@v3
+        with:
+          name: lastest
+          path: release
